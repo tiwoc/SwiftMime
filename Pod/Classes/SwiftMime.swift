@@ -11,19 +11,18 @@
 import Foundation
 
 public class SwiftMime{
-    
+
     public static let sharedManager = SwiftMime()
 
     var types = [NSString: NSString]()
     var extensions = [NSString: NSString]()
-    
+
     private init() {
         loadTypesFile("mime")
         loadTypesFile("node")
     }
 
     public func define(map: NSDictionary){
-        
         for type in map{
             let exts: NSArray = type.value as! NSArray
             if(exts.count == 0){
@@ -31,11 +30,11 @@ public class SwiftMime{
             for index in 0 ..< exts.count {
                 types[exts[index] as! NSString] = type.key as? NSString
             }
-            
+
             extensions[type.key as! NSString] = exts[0] as? NSString;
         }
     }
-    
+
     func loadTypesFile(filePath: String){
         let path =  NSBundle(forClass: object_getClass(self)).pathForResource(filePath, ofType: "types")
         let possibleContent = try? NSString(contentsOfFile:path!, encoding: NSUTF8StringEncoding)
@@ -55,13 +54,13 @@ public class SwiftMime{
         }
         define(map)
     }
-    
+
     public func lookupType(path: NSString) -> NSString?{
         let newPath = path.stringByReplacingOccurrencesOfString(".*[\\.\\/\\\\]", withString: "", options: .RegularExpressionSearch, range: NSMakeRange(0, path.length))
         let ext: NSString = newPath.lowercaseString
         return types[ext]
     }
-    
+
     public func lookupExtension(mimeType: NSString) -> NSString?{
         return extensions[mimeType]
     }
