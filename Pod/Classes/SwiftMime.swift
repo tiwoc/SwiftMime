@@ -29,7 +29,7 @@ public class SwiftMime{
             let exts: NSArray = type.value as! NSArray
             if(exts.count == 0){
             }
-            for var index = 0;index < exts.count; ++index {
+            for index in 0 ..< exts.count {
                 types[exts[index] as! NSString] = type.key as? NSString
             }
             
